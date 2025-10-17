@@ -44,8 +44,8 @@ Changed Data Types:
 Converted loan_amount, annual_income, total_payment, and installment to Whole Numbers / Decimal Numbers.
 Changed int_rate and dti to Percentage format.
 
-Created New Calculated Columns (DAX):
 
+Created New Calculated Columns (DAX):
 Default Rate = DIVIDE(
     CALCULATE(COUNTROWS(Data), Data[loan_status] = "Charged Off"),
     COUNTROWS(Data),
@@ -53,9 +53,7 @@ Default Rate = DIVIDE(
 )
 
 Loan to Income Ratio = DIVIDE(SUM(Data[loan_amount]), SUM(Data[annual_income]), 0)
-
 Payment Rate = DIVIDE(SUM(Data[total_payment]), SUM(Data[loan_amount]), 0)
-
 Dashboard Design and Visualizations:
 Loan Portfolio Overview
 
