@@ -18,11 +18,11 @@ The dataset used in this project consists of 38,234 loan records with key featur
 
 Skills Demonstrated:
 
-Data Cleaning & Transformation
-DAX Calculations
-Dashboard Design & KPI Creation
-Data Storytelling & Insight Presentation
-SQL Integration with Power BI
+Data Cleaning & Transformation.
+DAX Calculations.
+Dashboard Design & KPI Creation.
+Data Storytelling & Insight Presentation.
+SQL Integration with Power BI.
 
 
 Key Columns Used:
