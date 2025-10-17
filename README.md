@@ -2,13 +2,17 @@ Project Report: Financial Loan Analysis Dashboard in Power BI
 
 
 Objective:
+
 The main objective of this project is to analyze loan application and payment data to uncover trends in borrower profiles, loan performance, and risk levels. The dashboard provides key insights into loan distribution, default rates, customer demographics, and repayment behavior to support better financial decision-making.
 
+
 Problem Statement:
+
 Banks and financial institutions handle large volumes of loan data but struggle to quickly identify which loans are performing well, which borrower groups are risky, and how income or credit grades impact repayment.
 This project aims to transform raw loan data into an interactive Power BI dashboard that simplifies performance monitoring and risk analysis.
 
 Dataset Overview:
+
 The dataset used in this project consists of 38,234 loan records with key features about loan applications, borrower details, and repayment metrics.
 
 Key Columns Used:
@@ -31,10 +35,12 @@ total_acc	Total number of borrower’s credit accounts
 total_payment	Total payment made till date
 
 Data Cleaning & Transformation Steps:
+
 Removed Irrelevant Columns: Unused columns like issue_date, id, or text-based IDs were removed.
 Handled Missing Values: Replaced or removed nulls in annual_income, int_rate, and dti fields.
 
 Changed Data Types:
+
 Converted loan_amount, annual_income, total_payment, and installment to Whole Numbers / Decimal Numbers.
 Changed int_rate and dti to Percentage format.
 
