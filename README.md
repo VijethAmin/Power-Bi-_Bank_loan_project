@@ -15,6 +15,16 @@ Dataset Overview:
 
 The dataset used in this project consists of 38,234 loan records with key features about loan applications, borrower details, and repayment metrics.
 
+
+Skills Demonstrated:
+
+Data Cleaning & Transformation
+DAX Calculations
+Dashboard Design & KPI Creation
+Data Storytelling & Insight Presentation
+SQL Integration with Power BI
+
+
 Key Columns Used:
 
 Column Name	Description
