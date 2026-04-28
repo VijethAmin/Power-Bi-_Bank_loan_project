@@ -1,132 +1,234 @@
-Project Report: Financial Loan Analysis Dashboard in Power BI
+# 📊 Financial Loan Data Analysis Project
 
+## 🧾 1. Project Overview
 
-Objective:
+This project focuses on analyzing a financial loan dataset to understand borrower behavior, loan performance, and risk patterns.
 
-The main objective of this project is to analyze loan application and payment data to uncover trends in borrower profiles, loan performance, and risk levels. The dashboard provides key insights into loan distribution, default rates, customer demographics, and repayment behavior to support better financial decision-making.
+The workflow includes:
 
+* Data cleaning and preprocessing using Python
+* Data analysis using MySQL
+* Data visualization using Power BI
 
-Problem Statement:
+The goal is to derive meaningful business insights such as default risk, profitability, and customer segmentation.
 
-Banks and financial institutions handle large volumes of loan data but struggle to quickly identify which loans are performing well, which borrower groups are risky, and how income or credit grades impact repayment.
-This project aims to transform raw loan data into an interactive Power BI dashboard that simplifies performance monitoring and risk analysis.
+---
 
-Dataset Overview:
+## 📁 2. Dataset Details
 
-The dataset used in this project consists of 38,234 loan records with key features about loan applications, borrower details, and repayment metrics.
+* **Total Records:** 38,576
+* **Total Columns:** 24
 
+### Data Types:
 
-Skills Demonstrated:
+* Numerical: 9 columns
+* Categorical: 15 columns
 
-Data Cleaning & Transformation.
+### 🔑 Key Features:
 
-DAX Calculations.
+* Borrower details → income, employment, home ownership
+* Loan details → amount, term, interest rate
+* Loan status → loan_status, total_payment
+* Time-based → issue_date, payment dates
 
-Dashboard Design & KPI Creation.
+---
 
-Data Storytelling & Insight Presentation.
+## 🔍 3. Data Loading
 
-SQL Integration with Power BI.
+The dataset was loaded using Python Pandas:
 
+```python
+import pandas as pd
 
-Key Columns Used:
+# Load using file path
+file_path = r"F:\SQL works\Power BI project\financial_loan.csv"
+df = pd.read_csv(file_path)
+```
 
-Column Name	Description
-loan_status	Indicates if the loan was Fully Paid, Current, or Charged Off
-application_type	Type of application (INDIVIDUAL or JOINT)
-emp_length	Employment length of borrower
-grade / sub_grade	Credit grade assigned by the lender
-home_ownership	Indicates whether borrower owns, rents, or has a mortgage
-purpose	Reason for the loan (e.g., debt consolidation, credit card, home improvement)
-term	Loan term (36 or 60 months)
-verification_status	Whether income was verified
-annual_income	Borrower’s annual income
-dti	Debt-to-Income ratio
-installment	Monthly installment amount
-int_rate	Interest rate of the loan
-loan_amount	Amount of loan issued
-total_acc	Total number of borrower’s credit accounts
-total_payment	Total payment made till date
+✔ Data successfully loaded into a DataFrame for analysis.
 
-Data Cleaning & Transformation Steps:
+---
 
-Removed Irrelevant Columns: Unused columns like issue_date, id, or text-based IDs were removed.
-Handled Missing Values: Replaced or removed nulls in annual_income, int_rate, and dti fields.
+## 🧹 4. Data Cleaning
 
-Changed Data Types:
+### 🔹 4.1 Missing Value Analysis
 
-Converted loan_amount, annual_income, total_payment, and installment to Whole Numbers / Decimal Numbers.
-Changed int_rate and dti to Percentage format.
+```python
+df.isnull().sum()
+```
 
+### ✅ Findings:
 
-Created New Calculated Columns (DAX):
-Default Rate = DIVIDE(
-    CALCULATE(COUNTROWS(Data), Data[loan_status] = "Charged Off"),
-    COUNTROWS(Data),
-    0
-)
+* Only **emp_title** had missing values:
 
-Loan to Income Ratio = DIVIDE(SUM(Data[loan_amount]), SUM(Data[annual_income]), 0)
-Payment Rate = DIVIDE(SUM(Data[total_payment]), SUM(Data[loan_amount]), 0)
-Dashboard Design and Visualizations:
-Loan Portfolio Overview
+  * 1,438 missing (~3.7%)
+* All other columns were complete
 
-KPIs (Cards):
+---
 
-Total Loan Amount = SUM(loan_amount)
-Total Payments Received = SUM(total_payment)
-Average Interest Rate = AVERAGE(int_rate)
-Default Rate % = Default Rate
+### 🔹 4.2 Handling Missing Values
 
-Visuals:
+```python
+df['emp_title'] = df['emp_title'].fillna('Unknown')
+```
 
-Donut Chart: Loan Status Distribution (loan_status)
-Bar Chart: Loan Amount by Loan Purpose (purpose)
-Clustered Column Chart: Loan Grade vs Loan Amount (grade by loan_status)
+### ✅ Justification:
 
-Borrower Profile Insights
+* emp_title is not critical for risk analysis
+* Preserved all rows (no data loss)
+* Ensured dataset consistency
 
-Visuals:
-Histogram: Annual Income Distribution (annual_income)
-Column Chart: Home Ownership vs Loan Amount (home_ownership)
-Clustered Column Chart: Employment Length vs Loan Status (emp_length)
-Pie Chart: Application Type Distribution (application_type)
+---
 
-Insight Example:
-Borrowers with “10+ years” experience are more likely to have higher loan amounts.
-Majority of loans are “INDIVIDUAL” applications.
+## 🔄 5. Data Transformation
 
-Risk & Performance Analysis
+### 🔹 5.1 Date Conversion
 
-Visuals:
-Scatter Plot: Debt-to-Income (DTI) vs Loan Amount (colored by loan_status)
-Stacked Column Chart: Sub-Grade vs Default Rate (sub_grade by loan_status)
-Bar Chart: Loan Term (36 months vs 60 months) by Loan Status
-Card: Average Installment Amount
+```python
+date_cols = ['issue_date', 'last_payment_date', 'last_credit_pull_date', 'next_payment_date']
 
-Insights:
-Loans with higher dti values show greater risk of being “Charged Off.”
-60-month loans show higher defaults compared to 36-month ones.
-“Debt Consolidation” purpose dominates the dataset.
+for col in date_cols:
+    df[col] = pd.to_datetime(df[col], dayfirst=True)
+```
 
-Key Insights from the Dashboard:
+### ✅ Reason:
 
-Loan Performance: Approximately X% of loans are charged off, indicating potential risk areas.
-Income Trend: Higher-income borrowers tend to borrow more but show lower default rates.
-Interest Impact: Loans with higher int_rate often correlate with poorer loan grades.
-Purpose Analysis: “Debt consolidation” and “Credit Card” are the top loan purposes.
-Term-wise Default: 60-month term loans have a noticeably higher default percentage.
+* Original format was **DD-MM-YYYY**
+* Required for time-based analysis
 
-🏁 Conclusion:
+---
 
-The Financial Loan Analysis Dashboard provides an intuitive and interactive way to assess loan portfolio performance. It helps stakeholders identify risk factors, understand borrower profiles, and make informed lending decisions. The visual insights derived from this dashboard can aid in reducing default rates and optimizing loan strategies.
+### 🔹 5.2 Term Conversion
 
-🚀 Future Enhancements:
+```python
+df['term'] = df['term'].str.extract('(\d+)').astype(int)
+```
 
-Integrate real-time data refresh from SQL Server.
+✔ Converted from "36 months" → 36
 
-Add predictive analytics using Python integration in Power BI.
+---
 
-Include geographical analysis by state or region.
+### 🔹 5.3 Employment Length Conversion
 
-Build an automated loan risk scoring system using historical performance data.
+```python
+df['emp_length'] = df['emp_length'].str.extract('(\d+)')
+df['emp_length'] = df['emp_length'].fillna(0).astype(int)
+```
+
+✔ Converted to numeric format for analysis
+
+---
+
+## ⚙️ 6. Feature Engineering
+
+### 🔹 Risk Ratio
+
+```python
+df['risk_ratio'] = df['loan_amount'] / df['annual_income']
+```
+
+✔ Measures borrower risk based on income
+
+---
+
+### 🔹 Profit Calculation
+
+```python
+df['profit'] = df['total_payment'] - df['loan_amount']
+```
+
+✔ Measures lender profitability
+
+---
+
+## 💾 7. Data Export
+
+Cleaned dataset saved as:
+
+```python
+df.to_csv("financial_loan_cleaned.csv", index=False)
+```
+
+### ✔ Ready for:
+
+* Power BI dashboard
+* SQL analysis
+* Machine learning
+
+---
+
+## 🛢️ 8. MySQL Analysis
+
+### Database Creation
+
+```sql
+CREATE DATABASE financial_loan_project;
+USE financial_loan_project;
+```
+
+### Sample Analysis Queries
+
+```sql
+-- Total Loans
+SELECT COUNT(*) FROM financial_loan;
+
+-- Total Loan Amount
+SELECT SUM(loan_amount) FROM financial_loan;
+
+-- Default Rate
+SELECT
+    ROUND(SUM(CASE WHEN loan_status = 'Charged Off' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2)
+    AS default_rate
+FROM financial_loan;
+```
+
+---
+
+## 📊 9. Power BI Dashboard
+
+### Key KPIs:
+
+* Total Loan Applications
+* Total Funded Amount
+* Total Amount Received
+* Average Interest Rate
+* Average DTI
+* Default Rate
+
+### Visualizations:
+
+* Loan Status Distribution
+* Monthly Loan Trends
+* State-wise Loan Analysis
+* Purpose-wise Loan Distribution
+* Risk Analysis (using risk_ratio)
+
+---
+
+## 🧠 10. Key Insights
+
+* Majority of loans are fully paid (~86%)
+* High risk_ratio customers are more likely to default
+* Interest rates vary significantly across grades
+* Certain states contribute higher loan volumes
+
+---
+
+## 🚀 11. Tools & Technologies Used
+
+* Python (Pandas)
+* MySQL
+* Power BI
+
+---
+
+## 🎯 12. Conclusion
+
+This project demonstrates an end-to-end data analytics workflow:
+
+✔ Data Cleaning (Python)
+✔ Data Analysis (MySQL)
+✔ Data Visualization (Power BI)
+
+The final dashboard provides actionable insights into loan performance, risk assessment, and profitability, making it suitable for real-world business decision-making.
+
