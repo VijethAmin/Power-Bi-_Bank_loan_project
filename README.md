@@ -1,6 +1,6 @@
 # 📊 Financial Loan Data Analysis Project
 
-## 🧾 1. Project Overview
+##  1. Project Overview
 
 This project focuses on analyzing a financial loan dataset to understand borrower behavior, loan performance, and risk patterns.
 
@@ -14,7 +14,7 @@ The goal is to derive meaningful business insights such as default risk, profita
 
 ---
 
-## 📁 2. Dataset Details
+##  2. Dataset Details
 
 * **Total Records:** 38,576
 * **Total Columns:** 24
@@ -24,7 +24,7 @@ The goal is to derive meaningful business insights such as default risk, profita
 * Numerical: 9 columns
 * Categorical: 15 columns
 
-### 🔑 Key Features:
+###  Key Features:
 
 * Borrower details → income, employment, home ownership
 * Loan details → amount, term, interest rate
@@ -33,7 +33,7 @@ The goal is to derive meaningful business insights such as default risk, profita
 
 ---
 
-## 🔍 3. Data Loading
+##  3. Data Loading
 
 The dataset was loaded using Python Pandas:
 
@@ -49,15 +49,15 @@ df = pd.read_csv(file_path)
 
 ---
 
-## 🧹 4. Data Cleaning
+##  4. Data Cleaning
 
-### 🔹 4.1 Missing Value Analysis
+###  4.1 Missing Value Analysis
 
 ```python
 df.isnull().sum()
 ```
 
-### ✅ Findings:
+###  Findings:
 
 * Only **emp_title** had missing values:
 
@@ -66,13 +66,13 @@ df.isnull().sum()
 
 ---
 
-### 🔹 4.2 Handling Missing Values
+###  4.2 Handling Missing Values
 
 ```python
 df['emp_title'] = df['emp_title'].fillna('Unknown')
 ```
 
-### ✅ Justification:
+###  Justification:
 
 * emp_title is not critical for risk analysis
 * Preserved all rows (no data loss)
@@ -80,9 +80,9 @@ df['emp_title'] = df['emp_title'].fillna('Unknown')
 
 ---
 
-## 🔄 5. Data Transformation
+##  5. Data Transformation
 
-### 🔹 5.1 Date Conversion
+###  5.1 Date Conversion
 
 ```python
 date_cols = ['issue_date', 'last_payment_date', 'last_credit_pull_date', 'next_payment_date']
@@ -91,14 +91,14 @@ for col in date_cols:
     df[col] = pd.to_datetime(df[col], dayfirst=True)
 ```
 
-### ✅ Reason:
+###  Reason:
 
 * Original format was **DD-MM-YYYY**
 * Required for time-based analysis
 
 ---
 
-### 🔹 5.2 Term Conversion
+###  5.2 Term Conversion
 
 ```python
 df['term'] = df['term'].str.extract('(\d+)').astype(int)
@@ -108,7 +108,7 @@ df['term'] = df['term'].str.extract('(\d+)').astype(int)
 
 ---
 
-### 🔹 5.3 Employment Length Conversion
+###  5.3 Employment Length Conversion
 
 ```python
 df['emp_length'] = df['emp_length'].str.extract('(\d+)')
@@ -119,9 +119,9 @@ df['emp_length'] = df['emp_length'].fillna(0).astype(int)
 
 ---
 
-## ⚙️ 6. Feature Engineering
+##  6. Feature Engineering
 
-### 🔹 Risk Ratio
+###  Risk Ratio
 
 ```python
 df['risk_ratio'] = df['loan_amount'] / df['annual_income']
@@ -131,7 +131,7 @@ df['risk_ratio'] = df['loan_amount'] / df['annual_income']
 
 ---
 
-### 🔹 Profit Calculation
+###  Profit Calculation
 
 ```python
 df['profit'] = df['total_payment'] - df['loan_amount']
@@ -141,7 +141,7 @@ df['profit'] = df['total_payment'] - df['loan_amount']
 
 ---
 
-## 💾 7. Data Export
+##  7. Data Export
 
 Cleaned dataset saved as:
 
@@ -149,7 +149,7 @@ Cleaned dataset saved as:
 df.to_csv("financial_loan_cleaned.csv", index=False)
 ```
 
-### ✔ Ready for:
+###  Ready for:
 
 * Power BI dashboard
 * SQL analysis
@@ -157,7 +157,7 @@ df.to_csv("financial_loan_cleaned.csv", index=False)
 
 ---
 
-## 🛢️ 8. MySQL Analysis
+##  8. MySQL Analysis
 
 ### Database Creation
 
@@ -184,7 +184,7 @@ FROM financial_loan;
 
 ---
 
-## 📊 9. Power BI Dashboard
+##  9. Power BI Dashboard
 
 ### Key KPIs:
 
@@ -205,7 +205,7 @@ FROM financial_loan;
 
 ---
 
-## 🧠 10. Key Insights
+##  10. Key Insights
 
 * Majority of loans are fully paid (~86%)
 * High risk_ratio customers are more likely to default
@@ -214,7 +214,7 @@ FROM financial_loan;
 
 ---
 
-## 🚀 11. Tools & Technologies Used
+##  11. Tools & Technologies Used
 
 * Python (Pandas)
 * MySQL
@@ -222,7 +222,7 @@ FROM financial_loan;
 
 ---
 
-## 🎯 12. Conclusion
+##  12. Conclusion
 
 This project demonstrates an end-to-end data analytics workflow:
 
